@@ -15,6 +15,7 @@ class ArticleController extends Controller
      */
     public function index()
     {
+        Article::find(1);
         $articles = Article::orderBy('id', 'desc')->get();
         return $articles;
     }
@@ -52,12 +53,15 @@ class ArticleController extends Controller
      */
     public function update(Request $request)
     {
-        $article = new Article();
-
         Article::findOrFail($request->id);
-        $article->update($request->all());
 
-        return $article->all()->last();
+        Article::where('id', $request->id)
+            ->update($request->all());
+
+        return Article::select()->orderBy('created_at')->get();
+        // Article::findOrFail($request->id);
+
+        // return $article->all()->last();
     }
 
     /**

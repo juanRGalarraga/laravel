@@ -25,6 +25,6 @@ Route::controller(ArticleController::class)->group(function(){
     Route::get('/article', 'index');
     Route::get('/article/{id}', 'show');
     Route::post('/article/store', 'store');
-    Route::put('/article/update', 'update');
-    Route::delete('/article/destroy/{id}', 'destroy');
+    Route::put('/article/{id}/update', 'update');
+    Route::delete('/article/{id}/destroy', 'destroy');
 });
