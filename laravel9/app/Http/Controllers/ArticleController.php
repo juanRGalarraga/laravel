@@ -8,6 +8,11 @@ use PhpParser\Node\Arg;
 
 class ArticleController extends Controller
 {
+    function __construct()
+    {
+        $this->middleware('auth:api');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -15,9 +20,14 @@ class ArticleController extends Controller
      */
     public function index()
     {
-        Article::find(1);
-        $articles = Article::orderBy('id', 'desc')->get();
-        return $articles;
+        $all = Article::all();
+        return response()->json([
+            'status' => 'success',
+            'articles' => $all
+        ]);
+        // Article::find(1);
+        // $articles = Article::orderBy('id', 'desc')->get();
+        // return $articles;
     }
 
     /**
@@ -28,8 +38,24 @@ class ArticleController extends Controller
      */
     public function store(Request $request)
     {   
-        Article::create($request->all());
-        return Article::all()->last();
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'string|max:255',
+            'price' => 'numeric',
+            'stock' => 'integer',
+            'store_id' => 'required|integer'
+        ]);
+
+        $article = Article::create($request->all());
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Article created successfully',
+            'todo' => $article,
+        ]);
+
+        // Article::create($request->all());
+        // return Article::all()->last();
     }
 
     /**
@@ -40,8 +66,14 @@ class ArticleController extends Controller
      */
     public function show(Request $request)
     {   
-        Article::findOrFail($request->id);
-        return Article::query()->get()->where('id', '=', $request->id);
+        $article = Article::findOrFail($request->id);
+        return response()->json([
+            'status' => 'success',
+            'todo' => $article,
+        ]);
+
+        // Article::findOrFail($request->id);
+        // return Article::query()->get()->where('id', '=', $request->id);
     }
 
     /**
@@ -53,15 +85,25 @@ class ArticleController extends Controller
      */
     public function update(Request $request)
     {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'string|max:255',
+            'price' => 'numeric',
+            'stock' => 'integer',
+            'store_id' => 'required|integer'
+        ]);
+
         Article::findOrFail($request->id);
-
         Article::where('id', $request->id)
-            ->update($request->all());
+                ->update($request->all());
 
-        return Article::select()->orderBy('created_at')->get();
-        // Article::findOrFail($request->id);
+        $article = Article::select()->orderBy('created_at')->get();
 
-        // return $article->all()->last();
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Article update successfully',
+            'todo' => $article,
+        ]);
     }
 
     /**
@@ -72,7 +114,13 @@ class ArticleController extends Controller
      */
     public function destroy(Request $request)
     {
-        Article::findOrFail($request->id);
-        Article::destroy($request->id);
+        $article = Article::findOrFail($request->id);
+        $article->delete();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Article deleted successfully',
+            'todo' => $article,
+        ]);
     }
 }

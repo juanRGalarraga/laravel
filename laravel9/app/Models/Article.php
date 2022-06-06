@@ -10,8 +10,8 @@ class Article extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'description', 'price', 'stock'];
-    protected $guarded = ['store_id'];
+    protected $fillable = ['name', 'description', 'price', 'stock', 'store_id'];
+    // protected $guarded = ['store_id'];
 
     public function store(){
         return $this->belongsToMany(Store::class);

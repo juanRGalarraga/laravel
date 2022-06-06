@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\AuthController;
 use App\Http\Middleware\EnsureTokenIsValid;
 use Illuminate\Auth\Middleware\Authenticate;
 use Illuminate\Http\Request;
@@ -21,6 +22,13 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // });
 
+Route::controller(AuthController::class)->group(function () {
+    Route::post('login', 'login');
+    Route::post('register', 'register');
+    Route::post('logout', 'logout');
+    Route::post('refresh', 'refresh');
+});
+
 Route::controller(ArticleController::class)->group(function(){
     Route::get('/article', 'index');
     Route::get('/article/{id}', 'show');
@@ -28,3 +36,4 @@ Route::controller(ArticleController::class)->group(function(){
     Route::put('/article/{id}/update', 'update');
     Route::delete('/article/{id}/destroy', 'destroy');
 });
+
