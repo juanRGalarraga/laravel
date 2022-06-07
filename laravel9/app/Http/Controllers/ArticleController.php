@@ -46,16 +46,13 @@ class ArticleController extends Controller
             'store_id' => 'required|integer'
         ]);
 
-        $article = Article::create($request->all());
+        Article::create($request->all());
 
         return response()->json([
             'status' => 'success',
             'message' => 'Article created successfully',
-            'todo' => $article,
+            'article' => Article::all()->last()
         ]);
-
-        // Article::create($request->all());
-        // return Article::all()->last();
     }
 
     /**

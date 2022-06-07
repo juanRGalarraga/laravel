@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
+use PHPOpenSourceSaver\JWTAuth\Facades\JWTAuth;
 
 class AuthController extends Controller
 {
@@ -22,7 +23,7 @@ class AuthController extends Controller
         ]);
         $credentials = $request->only('email', 'password');
 
-        $token = Auth::attempt($credentials, true);
+        $token = JWTAuth::attempt($credentials, true);
         if (!$token) {
             return response()->json([
                 'status' => 'error',
@@ -55,7 +56,8 @@ class AuthController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        $token = Auth::login($user);
+        $token = JWTAuth::login($user);
+        
         return response()->json([
             'status' => 'success',
             'message' => 'User created successfully',
