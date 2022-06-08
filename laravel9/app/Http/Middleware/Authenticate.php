@@ -3,6 +3,8 @@
 namespace App\Http\Middleware;
 
 use Illuminate\Auth\Middleware\Authenticate as Middleware;
+use Closure;
+use Illuminate\Http\Request;
 
 class Authenticate extends Middleware
 {
@@ -12,10 +14,23 @@ class Authenticate extends Middleware
      * @param  \Illuminate\Http\Request  $request
      * @return string|null
      */
-    protected function redirectTo($request)
+    // protected function redirectTo($request)
+    // {
+    //     if (! $request->expectsJson()) {
+    //         return response()->json([
+    //             'name' => 'Abigail',
+    //             'state' => 'CA',
+    //         ]);
+    //         // return response(['data' => 'Unauthorized'])
+    //         //         ->header('Content-Type', 'aplication/json');
+    //     }
+    // }
+
+    public function handle($request, Closure $next, ...$guards)
     {
         if (! $request->expectsJson()) {
-            return response('User no logged!', 403);
+            return response()->json(['data' => 'Unauthorized'], 403);
         }
+        return $next($request);
     }
 }

@@ -2,9 +2,8 @@
 
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\AuthController;
-use App\Http\Middleware\EnsureTokenIsValid;
-use Illuminate\Auth\Middleware\Authenticate;
-use Illuminate\Http\Request;
+use App\Http\Controllers\StoreController;
+use App\Models\Store;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -30,10 +29,18 @@ Route::controller(AuthController::class)->group(function () {
 });
 
 Route::controller(ArticleController::class)->group(function(){
-    Route::get('/article', 'index');
-    Route::get('/article/{id}', 'show');
-    Route::post('/article/store', 'store');
-    Route::put('/article/{id}/update', 'update');
-    Route::delete('/article/{id}/destroy', 'destroy');
+    Route::get('article', 'index');
+    Route::get('article/{id}', 'show');
+    Route::post('article/store', 'store');
+    Route::put('article/{id}/update', 'update');
+    Route::delete('article/{id}/destroy', 'destroy');
+});
+
+Route::controller(StoreController::class)->group(function(){
+    Route::get('store', 'index');
+    Route::get('store/{id}', 'show');
+    Route::post('store/create', 'store');
+    Route::put('store/{id}/update', 'update');
+    Route::delete('store/{id}/destroy', 'destroy');
 });
 

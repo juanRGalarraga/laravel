@@ -12,7 +12,7 @@ class AuthController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login','register']]);
+        $this->middleware('auth', ['except' => ['login','register']]);
     }
 
     public function login(Request $request)
@@ -23,7 +23,7 @@ class AuthController extends Controller
         ]);
         $credentials = $request->only('email', 'password');
 
-        $token = JWTAuth::attempt($credentials, true);
+        $token = JWTAuth::attempt($credentials);
         if (!$token) {
             return response()->json([
                 'status' => 'error',

@@ -3,10 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Article;
-use PhpParser\Node\Arg;
+use App\Models\Store;
 
-class ArticleController extends Controller
+class StoreController extends Controller
 {
     function __construct()
     {
@@ -20,7 +19,7 @@ class ArticleController extends Controller
      */
     public function index()
     {
-        $all = Article::all();
+        $all = Store::all();
         return response()->json([
             'status' => 'success',
             'articles' => $all
@@ -38,17 +37,14 @@ class ArticleController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'string|max:255',
-            'price' => 'numeric',
-            'stock' => 'integer',
-            'store_id' => 'required|integer'
         ]);
 
-        Article::create($request->all());
+        Store::create($request->all());
 
         return response()->json([
             'status' => 'success',
             'message' => 'Article created successfully',
-            'article' => Article::all()->last()
+            'article' => Store::all()->last()
         ]);
     }
 
@@ -60,10 +56,10 @@ class ArticleController extends Controller
      */
     public function show(Request $request)
     {   
-        $article = Article::findOrFail($request->id);
+        $store = Store::findOrFail($request->id);
         return response()->json([
             'status' => 'success',
-            'todo' => $article,
+            'todo' => $store,
         ]);
     }
 
@@ -79,21 +75,18 @@ class ArticleController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'string|max:255',
-            'price' => 'numeric',
-            'stock' => 'integer',
-            'store_id' => 'required|integer'
         ]);
 
-        Article::findOrFail($request->id);
-        Article::where('id', $request->id)
+        Store::findOrFail($request->id);
+        Store::where('id', $request->id)
                 ->update($request->all());
 
-        $article = Article::select()->orderBy('created_at')->get();
+        $store = Store::select()->orderBy('created_at')->get();
 
         return response()->json([
             'status' => 'success',
             'message' => 'Article update successfully',
-            'todo' => $article,
+            'todo' => $store,
         ]);
     }
 
@@ -105,13 +98,13 @@ class ArticleController extends Controller
      */
     public function destroy(Request $request)
     {
-        $article = Article::findOrFail($request->id);
-        $article->delete();
+        $store = Store::findOrFail($request->id);
+        $store->delete();
 
         return response()->json([
             'status' => 'success',
             'message' => 'Article deleted successfully',
-            'todo' => $article,
+            'todo' => $store,
         ]);
     }
 }
